@@ -962,7 +962,12 @@
         </footer>
     </div>
     
-    @section('script')       
+    @section('script')    
+        <script src="{{ asset('assets/wheel/js/chart.js') }}"></script>
+        <script src="{{ asset('assets/wheel/js/roda-1.js') }}"></script>
+        <script src="{{ asset('assets/wheel/js/roda-2.js') }}"></script>
+        <script src="{{ asset('assets/wheel/js/roda-3.js') }}"></script>
+        <script src="{{ asset('assets/wheel/js/Swipe-Slider-6.js') }}"></script>   
         <script>
             var url_chart_1 = "{{route('api.wheel_satisfaction_with_life',$id)}}";
             var url_chart_2 = "{{route('api.wheel_satisfaction_4_human_intelligences',$id)}}";

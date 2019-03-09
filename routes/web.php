@@ -26,7 +26,8 @@ Route::post('/questions/{id}','HomeController@postQuestions')->name('wheel.quest
 
 Route::post('/sendemail','EmailController@sendEmail')->name('wheel.sendemail');
 
+
 /**
- * CAREER
+ * CALENDAR
  */
-Route::get('/career/{email}/{hash}','HomeController@getCareer')->name('wheel.mycareer');
+Route::get('/calendar','CalendarController@getCalendar')->name('calendar.calendar');
