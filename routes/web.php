@@ -31,3 +31,4 @@ Route::post('/sendemail','EmailController@sendEmail')->name('wheel.sendemail');
  * CALENDAR
  */
 Route::get('/calendar','CalendarController@getCalendar')->name('calendar.calendar');
+Route::post('/calendar/event','CalendarController@postEvent')->name('calendar.postevent');

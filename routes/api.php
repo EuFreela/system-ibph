@@ -24,7 +24,6 @@ Route::middleware('api')->get('/wheel_satisfaction_4_human_intelligences/{id}','
 Route::middleware('api')->get('/wheel_development_copetences_high_performance/{id}','APIController@getWheel_3')->name('api.wheel_development_copetences_high_performance');
 
 /**
- * CAREERs
+ * CALENDAR
  */
-Route::middleware('api')->get('/self_observation/{id}','APIController@getCareer_1')->name('api.self_observation');
-
+Route::middleware('api')->get('/calendar/event','APIController@getCalendarEvent')->name('api.calendar_event');
