@@ -20,8 +20,8 @@ class CalendarTable extends Migration
             $table->string('description');
             $table->time('start_hour'); //hora de inicio do evento
             $table->time('end_hour'); //hora de termino do evento
-            $table->date('start'); //data inicio do evento
-            $table->date('end'); //data fim do evento
+            $table->string('start'); //data inicio do evento
+            $table->string('end'); //data fim do evento
             $table->timestamps();
         });
     }

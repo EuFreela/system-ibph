@@ -32,18 +32,17 @@ $(document).ready(function() {
     // eventLimit: true, // allow "more" link when too many events
 
     eventSources: [
-   {
-     url: '/api/calendar/event', // use the `url` property
-     color: 'blue',    // an option!
-     textColor: 'white'  // an option!
-   }
+     {
+       url: '/api/calendar/event', // use the `url` property
+       color: 'blue',    // an option!
+       textColor: 'white',  // an option
+     },
+   
 
  ],
 
     dayClick: function(date, jsEvent, view) {
       $('#eventos').modal("show");
-      var startHour = parseInt($('#startTime').timepicker({ timeFormat: 'H:i' }));
-      var endHour = parseInt($('#endTime').timepicker({ timeFormat: 'H:i' });
       $('#dateStartEvent').val(date);
       $('#dateEndEvent').val(date);
       console.log($('#event'));
