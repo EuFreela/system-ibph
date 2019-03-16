@@ -47,10 +47,10 @@ body {
           <div class="form-group">
             <div class="row">
               <div class="col">
-                <input type="time" class="form-control" name="Hora_Inicio" placeholder="Início" required>
+                <input type="time" class="form-control" id="start_hora" name="Hora_Inicio" placeholder="Início" required>
               </div>
               <div class="col">
-                <input type="time" class="form-control" name="Hora_Fim" placeholder="Fim" required>
+                <input type="time" class="form-control" id="end_hora" name="Hora_Fim" placeholder="Fim" required>
               </div>
             </div>
           </div>

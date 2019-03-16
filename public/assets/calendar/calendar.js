@@ -43,10 +43,25 @@ $(document).ready(function() {
 
     dayClick: function(date, jsEvent, view) {
       $('#eventos').modal("show");
-      $('#dateStartEvent').val(date);
-      $('#dateEndEvent').val(date);
-      console.log($('#event'));
-      console.log(date.format());
+      var $start_hour = '';
+      var $end_hour = '';
+      $('#start_hora').change(function(){
+      var $start_hour = $('#start_hora').val();
+      $('#dateStartEvent').val(date.format()+'T'+$start_hour);
+      console.log('tesete: '+$('#dateStartEvent').val());
+    });
+    $('#end_hora').change(function(){
+    var $end_hour = $('#end_hora').val();
+    $('#dateEndEvent').val(date.format()+'T'+$end_hour);
+  });
+      console.log($('#dateEndEvent').val());
     },
+
+    eventClick: function(calEvent, jsEvent, view) {
+
+      $('#eventosDetail').modal("show");
+  
+    },
+
   });
 });
