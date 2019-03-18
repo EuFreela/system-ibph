@@ -32,3 +32,6 @@ Route::post('/sendemail','EmailController@sendEmail')->name('wheel.sendemail');
  */
 Route::get('/calendar','CalendarController@getCalendar')->name('calendar.calendar');
 Route::post('/calendar/event','CalendarController@postEvent')->name('calendar.postevent');
+Route::put('/calendar/editevent','CalendarController@putEvent')->name('calendar.putevent');
+Route::get('/calendar/deleteevent/{id}','CalendarController@deleteEvent')->name('calendar.deleteevent');
+

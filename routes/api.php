@@ -27,3 +27,4 @@ Route::middleware('api')->get('/wheel_development_copetences_high_performance/{i
  * CALENDAR
  */
 Route::middleware('api')->get('/calendar/event','APIController@getCalendarEvent')->name('api.calendar_event');
+Route::middleware('api')->get('/calendar/eventblock','APIController@getCalendarEventBlock')->name('api.calendar_eventblock');

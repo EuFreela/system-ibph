@@ -48,4 +48,9 @@ class APIController extends Controller
         return response()->json( DB::table('calendar')->get());
     }
 
+    public function getCalendarEventBlock()
+    {
+        return response()->json( DB::table('calendarblock')->get());
+    }
+
 }

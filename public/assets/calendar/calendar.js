@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
   $('#calendar').fullCalendar({
     themeSystem: 'bootstrap4',
@@ -10,6 +10,9 @@ $(document).ready(function() {
     // defaultDate: '2019-01-12',
     locale: 'pt-br',
     displayEventTime: 'true',
+
+    
+
     // navLinks: true, // can click day/week names to navigate views
     // selectable: true,
     // selectHelper: true,
@@ -28,39 +31,87 @@ $(document).ready(function() {
     //   }
     //   $('#calendar').fullCalendar('unselect');
     // },
-    editable: true,
+    editable: false,
     // eventLimit: true, // allow "more" link when too many events
-
-    eventSources: [
-     {
-       url: '/api/calendar/event', // use the `url` property
-       color: 'blue',    // an option!
-       textColor: 'white',  // an option
-     },
    
+    eventSources: [
+      {
+        url: '/api/calendar/event', // use the `url` property
+        textColor: 'white',  // an option
+        color: '#cc5200',
+      },
+     
+      {
+       
+        events: function(start, end, timezone, callback) 
+        {
+          jQuery.ajax({
+              url: '/api/calendar/eventblock',
+              type: 'GET',
+              dataType: 'json',
+              success: function(doc) {                
+                var events = [];
+                events.push({                             
+                  start: doc[0].start,
+                  end: moment(doc[0].end).add(1, 'days').format('YYYY-MM-DD'),
+                  color: '#ff8080',
+                  rendering: 'background',
+                  dayClick: false
+                });
+                callback(events);
+              }
+          });
+        }
 
- ],
+      }
+      
+    ],
+    
+    dayClick: function (date, jsEvent, view) {
 
-    dayClick: function(date, jsEvent, view) {
-      $('#eventos').modal("show");
-      var $start_hour = '';
-      var $end_hour = '';
-      $('#start_hora').change(function(){
-      var $start_hour = $('#start_hora').val();
-      $('#dateStartEvent').val(date.format()+'T'+$start_hour);
-      console.log('tesete: '+$('#dateStartEvent').val());
-    });
-    $('#end_hora').change(function(){
-    var $end_hour = $('#end_hora').val();
-    $('#dateEndEvent').val(date.format()+'T'+$end_hour);
-  });
-      console.log($('#dateEndEvent').val());
+      jQuery.ajax({
+        url: '/api/calendar/eventblock',
+        type: 'GET',
+        dataType: 'json',
+        success: function(doc) {    
+
+          var fDate,lDate,cDate;
+          fDate = Date.parse(doc[0].start);
+          lDate = Date.parse(doc[0].end);
+          cDate = Date.parse(date.format());
+          if((cDate <= lDate && cDate >= fDate)) {
+            alert('Esta data esta bloqueada!');
+          }else{
+            $('#eventos').modal("show");
+            var $start_hour = '';
+            var $end_hour = '';
+            $('#start_hora').change(function () {
+              var $start_hour = $('#start_hora').val();
+              $('#dateStartEvent').val(date.format() + 'T' + $start_hour);
+              //console.log('tesete: '+$('#dateStartEvent').val());
+            });
+            $('#end_hora').change(function () {
+              var $end_hour = $('#end_hora').val();
+              $('#dateEndEvent').val(date.format() + 'T' + $end_hour);
+            });
+          }
+        }
+      });
+
+      
+        //console.log($('#dateEndEvent').val());
     },
 
-    eventClick: function(calEvent, jsEvent, view) {
+    eventClick: function (calEvent, jsEvent, view) {
 
-      $('#eventosDetail').modal("show");
-  
+      $('#eventDetail').modal("show");
+      $('#titleDetail').val(calEvent.title);
+      $('#descriptionDetail').val(calEvent.description);
+      $('#start_datetimeDetail').val(moment(calEvent.start_datetime).format('H:mm'));
+      $('#end_datetimeDetail').val(moment(calEvent.end_datetime).format('H:mm'));
+      $('#dataDetail').val(moment(calEvent.start_datetime).format('YYYY-MM-DD'));
+      $('#idDetail').val(calEvent.id);
+
     },
 
   });
