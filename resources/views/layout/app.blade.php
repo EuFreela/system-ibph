@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
 
-    <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
     <link rel="stylesheet" href="{{ asset('assets/wheel/css/Company-desc---img-on-right.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/wheel/css/divider-text-middle.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/wheel/css/Features-Clean.css') }}">
@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="{{ asset('assets/wheel/css/Highlight-Clean.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/wheel/css/ibph.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/wheel/css/Registration-Form-with-Photo.css') }}">    
-    <link rel="stylesheet" href="{{ asset('assets/wheel/css/Swipe-Slider-6.css') }}">-->
+    <link rel="stylesheet" href="{{ asset('assets/wheel/css/Swipe-Slider-6.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/wheel/css/styles.css') }}">
 
     @yield('css') 

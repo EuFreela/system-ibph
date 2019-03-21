@@ -16,15 +16,15 @@ class HomeController extends Controller
     public function getWheel($email,$hash)
     {           
         if(DB::table('Inscricao')->whereRaw('email=? and codigoAvaliacao=?',[$email,$hash])->orderBy('id','desc')->count()>0):
-
+           
             $id=DB::table('Inscricao')->where('codigoAvaliacao','=',$hash)->orderBy('id','desc')->first()->id;
-
+            
             /**
              * career
              */
-            $elements = $this->sumPoint($id);
+            $elements = $this->sumPoint($id);           
             $sum = $elements[0]+$elements[1]+$elements[2]+$elements[3]+$elements[4];
-            $sum_felicidades = DB::table('AreaVida')->where('id_avaliado','=',$id)->orderBy('id','desc')->first()->felicidade_positivas + DB::table('AreaVida')->where('id_avaliado','=',$id)->orderBy('id','desc')->first()->felicidade_negativas + DB::table('AreaVida')->where('id_avaliado','=',$id)->orderBy('id','desc')->first()->felicidade_neutras;
+           
             /**
              * wheel
              */
@@ -41,7 +41,7 @@ class HomeController extends Controller
                     'sum' => $sum,
                     'self_observation'=>DB::table('AutoObservacao')->where('id_avaliado','=',$id)->orderBy('id','desc')->first(),
                     'cha'=>DB::table('Cha')->where('id_avaliado','=',$id)->orderBy('id','desc')->first(),
-                    'sum_felicidades' => $sum_felicidades
+                    'sum_felicidades' => $this->sumHappyness($id)
                 ]);
 
         endif;
@@ -106,6 +106,9 @@ class HomeController extends Controller
     }
 
 
+    /**
+     * FUNÇÕES PRIVADAS
+     */
     public function sumPoint( $id )
     {
         $el = DB::table('AutoObservacao')->where('id_avaliado','=',$id)->orderBy('id','desc')->first();
@@ -140,6 +143,16 @@ class HomeController extends Controller
         if($val==5) $arr[4] = $arr[4] + 5;
 
         return $arr;
+    }
+
+    private function sumHappyness($id)
+    {
+        $felicidades_positivas = DB::table('AreaVida')->where('id_avaliado','=',$id)->orderBy('id','desc')->first()->felicidade_positivas;
+        $felicidades_negativas = DB::table('AreaVida')->where('id_avaliado','=',$id)->orderBy('id','desc')->first()->felicidade_negativas;
+        $felicidades_neutras = DB::table('AreaVida')->where('id_avaliado','=',$id)->orderBy('id','desc')->first()->felicidade_neutras;
+        
+        return (str_replace("%","",$felicidades_positivas)) + (str_replace("%","",$felicidades_negativas)) + (str_replace("%","",$felicidades_neutras));
+       
     }
 
 
