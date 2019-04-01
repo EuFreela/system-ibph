@@ -23,8 +23,6 @@ body {
 
 <div id='calendar'></div>
 
-<button type="button" onclick="ShowEventPopup()">Launch modal</button>
-
 <div class="modal fade" id="eventos" tabindex="-1" role="dialog" aria-labelledby="newEvent" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">

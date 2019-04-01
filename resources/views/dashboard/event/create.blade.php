@@ -23,7 +23,7 @@
 
     <div class="addEvent">
         <h2 class="title">Cadastro de Eventos</h2>
-        <form method="post" action="{{ route('createevent.postevent') }}">
+        <form method="post" action="{{ route('dashboard.posteventcreate') }}">
             <div class="form-group">
                 <label for="titleEvent">Título</label>
                 <input type="text" class="form-control" id="titleEvent" name="Titulo" placeholder="Título do Evento" required>

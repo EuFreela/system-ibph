@@ -35,3 +35,27 @@ Route::post('/calendar/event','CalendarController@postEvent')->name('calendar.po
 Route::put('/calendar/editevent','CalendarController@putEvent')->name('calendar.putevent');
 Route::get('/calendar/deleteevent/{id}','CalendarController@deleteEvent')->name('calendar.deleteevent');
 
+
+/**
+ * DASHBOARD
+ */
+
+/** BLOCKEVENT */
+Route::get('/dashboard/blockevent/create', 'DashboardController@getBlockEventCreate')->name('dashboard.getblockeventcreate');
+Route::post('/dashboard/blockevent/create', 'DashboardController@postBlockEventCreate')->name('dashboard.postblockeventcreate');
+Route::get('/dashboard/blockevent/list', 'DashboardController@getBlockEventList')->name('dashboard.getblockeventlist');
+Route::get('/dashboard/blockevent/edit/{id}', 'DashboardController@getBlockEventEdit')->name('dashboard.getblockeventedit');
+Route::put('/dashboard/blockevent/edit/{id}', 'DashboardController@putBlockEventEdit')->name('dashboard.putblockeventedit');
+
+
+/** EVENT */
+Route::get('/dashboard/event/create', 'DashboardController@getEventCreate')->name('dashboard.geteventcreate');
+Route::post('/dashboard/event/create', 'DashboardController@postEventCreate')->name('dashboard.posteventcreate');
+Route::get('/dashboard/event/list', 'DashboardController@getEventList')->name('dashboard.geteventlist');
+Route::get('/dashboard/event/edit/{id}', 'DashboardController@getEventEdit')->name('dashboard.geteventedit');
+Route::put('/dashboard/event/edit/{id}', 'DashboardController@putEventEdit')->name('dashboard.puteventedit');
+Route::get('/dashboard/event/delete/{id}', 'DashboardController@deleteEvent')->name('dashboard.deletevent');
+
+
+
+

@@ -43,22 +43,30 @@ $(document).ready(function () {
      
       {
        
-        events: function(start, end, timezone, callback) 
+        events: function(start, end, timezone, callback)
         {
+
           jQuery.ajax({
               url: '/api/calendar/eventblock',
               type: 'GET',
               dataType: 'json',
-              success: function(doc) {                
-                var events = [];
-                events.push({                             
-                  start: doc[0].start,
-                  end: moment(doc[0].end).add(1, 'days').format('YYYY-MM-DD'),
-                  color: '#ff8080',
-                  rendering: 'background',
-                  dayClick: false
-                });
-                callback(events);
+              success: function(doc) {
+
+                      var events = [];
+                  if (!doc.length == 0) {
+                    for (var i = 0; i < doc.length; i++) {
+                      events.push({
+                        start: doc[i].start,
+                        end: moment(doc[i].end).add(1, 'days').format('YYYY-MM-DD'),
+                        color: '#ff8080',
+                        rendering: 'background',
+                        dayClick: false
+                      });
+                    }
+
+                  }
+                      callback(events);
+
               }
           });
         }
@@ -73,32 +81,32 @@ $(document).ready(function () {
         url: '/api/calendar/eventblock',
         type: 'GET',
         dataType: 'json',
-        success: function(doc) {    
+        success: function(doc)
+        {
 
-          var fDate,lDate,cDate;
-          fDate = Date.parse(doc[0].start);
-          lDate = Date.parse(doc[0].end);
-          cDate = Date.parse(date.format());
-          if((cDate <= lDate && cDate >= fDate)) {
-            alert('Esta data esta bloqueada!');
-          }else{
-            $('#eventos').modal("show");
-            var $start_hour = '';
-            var $end_hour = '';
-            $('#start_hora').change(function () {
-              var $start_hour = $('#start_hora').val();
-              $('#dateStartEvent').val(date.format() + 'T' + $start_hour);
-              //console.log('tesete: '+$('#dateStartEvent').val());
-            });
-            $('#end_hora').change(function () {
-              var $end_hour = $('#end_hora').val();
-              $('#dateEndEvent').val(date.format() + 'T' + $end_hour);
-            });
-          }
+          var fDate, lDate, cDate;
+          var blocks = new Array(doc.length);
+          var aux = 0;
+
+          if( !doc.length == 0 ) {
+
+            for (var i = 0; i < doc.length; i++) { blocks[i] = doc[i]; }
+            for (var i = 0; i < blocks.length; i++) {
+
+              fDate = Date.parse(blocks[i].start);
+              lDate = Date.parse(blocks[i].end);
+              cDate = Date.parse(date.format());
+
+              if ( (cDate <= lDate && cDate >= fDate) )
+                aux = aux + 1;
+            }
+
+            if( aux > 0) { alert('Esta data esta bloqueada!'); }else{ setEvent(date); }
+
+            }else { setEvent(date); }
+
         }
       });
-
-      
         //console.log($('#dateEndEvent').val());
     },
 
@@ -107,12 +115,30 @@ $(document).ready(function () {
       $('#eventDetail').modal("show");
       $('#titleDetail').val(calEvent.title);
       $('#descriptionDetail').val(calEvent.description);
-      $('#start_datetimeDetail').val(moment(calEvent.start_datetime).format('H:mm'));
-      $('#end_datetimeDetail').val(moment(calEvent.end_datetime).format('H:mm'));
+      $('#start_datetimeDetail').val(moment(calEvent.start_datetime).format('HH:mm'));
+      $('#end_datetimeDetail').val(moment(calEvent.end_datetime).format('HH:mm'));
       $('#dataDetail').val(moment(calEvent.start_datetime).format('YYYY-MM-DD'));
       $('#idDetail').val(calEvent.id);
 
     },
 
   });
+
+
+  function setEvent(date)
+  {
+    $('#eventos').modal("show");
+    var $start_hour = '';
+    var $end_hour = '';
+    $('#start_hora').change(function () {
+      var $start_hour = $('#start_hora').val();
+      $('#dateStartEvent').val(date.format() + 'T' + $start_hour);
+      //console.log('tesete: '+$('#dateStartEvent').val());
+    });
+    $('#end_hora').change(function () {
+      var $end_hour = $('#end_hora').val();
+      $('#dateEndEvent').val(date.format() + 'T' + $end_hour);
+    });
+  }
+
 });

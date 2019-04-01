@@ -15,8 +15,11 @@ class CreateCalendarblockTable extends Migration
     {
         Schema::create('calendarblock', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('title');
+            $table->text('description');
             $table->date('start');
             $table->date('end');
+            $table->integer('client_id');
             $table->timestamps();
         });
     }

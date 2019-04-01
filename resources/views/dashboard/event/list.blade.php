@@ -18,7 +18,6 @@
 
 @section('content')
 
-
     @include('layout.msg')
 
     <div class="listEvent">
@@ -38,8 +37,8 @@
                 <td>{{$event->title}}</td>
                 <td>{{date("d/m/Y H:i", strtotime($event->start_datetime))}}</td>
                 <td>{{date("d/m/Y H:i", strtotime($event->end_datetime))}}</td>
-                <td><a href="{{ route('editevent',$event->id) }}" class="text-info">Editar</a></td>
-                <td><a href="">Deletar</a></td>
+                <td><a href="{{ route('dashboard.geteventedit',$event->id) }}" class="text-info">Editar</a></td>
+                <td><a href="{{ route('dashboard.deletevent',$event->id) }}">Deletar</a></td>
             </tr>
                 @endforeach
             </tbody>

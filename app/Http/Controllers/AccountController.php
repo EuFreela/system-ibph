@@ -35,10 +35,10 @@ class AccountController extends Controller
             'Codigo_Avaliacao' => ['required',new AlphaNumPointRules()]
         ]);
 
-        if(DB::table('Inscricao')->whereRaw('email=? and codigoAvaliacao=?',[$request->Email,$request->Codigo_Avaliacao])->count()>0)
-            return redirect()->route('wheel.mywheel',[$request->Email,$request->Codigo_Avaliacao]);
+      //  if(DB::table('Inscricao')->whereRaw('email=? and codigoAvaliacao=?',[$request->Email,$request->Codigo_Avaliacao])->count()>0)
+         //   return redirect()->route('wheel.mywheel',[$request->Email,$request->Codigo_Avaliacao]);
         
-        return redirect()->back()->with('error','E-mail ou Código inválidos');
+       // return redirect()->back()->with('error','E-mail ou Código inválidos');
     }
 
     public function postRecovery(Request $request, Mailer $mailer)

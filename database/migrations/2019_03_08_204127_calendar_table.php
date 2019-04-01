@@ -17,7 +17,7 @@ class CalendarTable extends Migration
             $table->increments('id');
             $table->integer('client_id');
             $table->string('title');
-            $table->string('description');
+            $table->text('description');
             $table->dateTime('start_datetime'); //hora de inicio do evento
             $table->dateTime('end_datetime'); //hora de termino do evento
             $table->string('start'); //data inicio do evento

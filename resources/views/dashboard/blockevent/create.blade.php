@@ -18,12 +18,11 @@
 
 @section('content')
 
-
     @include('layout.msg')
 
     <div class="addBlockEvent">
         <h2 class="title">Cadastro de Bloqueios</h2>
-        <form method="post" action="{{ route('dashboard.postblockevent') }}">
+        <form method="post" action="{{ route('dashboard.postblockeventcreate') }}">
             <div class="form-group">
                 <label for="titleEvent">Título</label>
                 <input type="text" class="form-control" id="titleEvent" name="Titulo" placeholder="Título do Evento" required>

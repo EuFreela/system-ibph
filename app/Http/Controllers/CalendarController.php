@@ -112,6 +112,8 @@ class CalendarController extends Controller
     return redirect()->back()->with('error','Não oi possível excluir este evento!');
     
   }
+
+
   /**
    * Funções internas
    */
