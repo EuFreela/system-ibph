@@ -60,39 +60,35 @@
             <input type="hidden" name="Cliente" value="1234"/>
 
             <p>Hor&aacute;rios disponíveis para entrevistas</p>
-            @foreach($schedule as $s)
             <div class="row">
-                <div class="control-group input-group" style="margin-top:10px">
                 <div class="col">
-                    <input type="time" name="hours[]" class="form-control" value="{{date("H:i", strtotime($s->datetime))}}">
-                </div>
-                <div class="col">
-                    <input type="number" name="vacancy[]" class="form-control" value="{{$s->vacancy}}">
-                </div>
-                    <input type="hidden" name="ids[]" value="{{$s->id}}">
-                <button class="btn btn-danger remove" type="button"><i class="fa fa-minus"></i></button>
+                    <div class="input-group control-group after-add-more">
+                        <div class="input-group-btn">
+                            <button class="btn btn-success add-more" type="button"><i class="fa fa-plus"></i></button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            @endforeach
-            <button class="btn btn-danger add after-add-more" type="button" style="margin-top: 50px"><i class="fa fa-plus"></i></button>
-            <button type="submit" class="btn btn-primary" style="margin-top: 50px">Salvar</button>
+
+            <button type="submit" class="btn btn-primary">Salvar</button>
             @csrf
         </form>
-    </div>
 
-        <div class="hide copy">
-            <div class="row">
-            <div class="control-group input-group" style="margin-top:10px">
-                <div class="col">
-                    <input type="time" name="hours[]" class="form-control" value="">
+        <div class="row">
+            <!-- Copy Fields -->
+            <div class="copy hide">
+                <div class="control-group input-group" style="margin-top:10px">
+                    <label for="hour">Hora</label>
+                    <input type="time" name="hours[]" id="hour" class="form-control hour">
+                    <label for="vacancy">Vagas</label>
+                    <input type="number" name="vacancy[]"  id="vacancy" class="form-control vacancy">
+                    <div class="input-group-btn">
+                        <button class="btn btn-danger remove" type="button"><i class="fa fa-minus"></i></button>
+                    </div>
                 </div>
-                <div class="col">
-                    <input type="number"  name="vacancy[]" class="form-control" value="">
-                </div>
-                <button class="btn btn-danger remove" type="button"><i class="fa fa-minus"></i></button>
-            </div>
             </div>
         </div>
+    </div>
 
     </div>
 
@@ -124,16 +120,24 @@
         $(document).ready(function() {
 
 
-            $(".add").click(function(){
+            $(".add-more").click(function(){
                 var html = $(".copy").html();
-                $(".after-add-more").before(html);
+                $(".after-add-more").after(html);
             });
 
 
             $("body").on("click",".remove",function(){
                 $(this).parents(".control-group").remove();
             });
+
+            setTimes('{{$schedule}}');
         });
 
+        function setTimes(times) {
+            console.log(times);
+            for (let i = 0; i < "{{count($schedule)}}"; i++) {
+                $('.add-more').trigger("click");
+            }
+        }
     </script>
 @endsection

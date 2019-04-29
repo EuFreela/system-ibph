@@ -112,13 +112,24 @@ $(document).ready(function () {
 
     eventClick: function (calEvent, jsEvent, view) {
 
-      $('#eventDetail').modal("show");
-      $('#titleDetail').val(calEvent.title);
-      $('#descriptionDetail').val(calEvent.description);
-      $('#start_datetimeDetail').val(moment(calEvent.start_datetime).format('HH:mm'));
-      $('#end_datetimeDetail').val(moment(calEvent.end_datetime).format('HH:mm'));
-      $('#dataDetail').val(moment(calEvent.start_datetime).format('YYYY-MM-DD'));
-      $('#idDetail').val(calEvent.id);
+      var session_client_id = $('#client_id').val();
+
+      if(calEvent.client_id == session_client_id) {
+        $('#eventDetail').modal("show");
+        $('#titleDetail').val(calEvent.title);
+        $('#descriptionDetail').val(calEvent.description);
+        $('#start_datetimeDetail').val(moment(calEvent.start_datetime).format('HH:mm'));
+        $('#end_datetimeDetail').val(moment(calEvent.end_datetime).format('HH:mm'));
+        $('#dataDetail').val(moment(calEvent.start_datetime).format('YYYY-MM-DD'));
+        $('#idDetail').val(calEvent.id);
+      }else{
+        $('#eventShow').modal("show");
+        $('#titleShow').html(calEvent.title);
+        $('#descriptionShow').html(calEvent.description);
+        $('#dataInitShow').html(moment(calEvent.start_datetime).format('DD/MM/YYYY HH:mm'));
+        $('#dataEndShow').html(moment(calEvent.end_datetime).format('DD/MM/YYYY HH:mm'));
+        $('#idShow').val(calEvent.id);
+      }
 
     },
 
@@ -127,18 +138,18 @@ $(document).ready(function () {
 
   function setEvent(date)
   {
-    $('#eventos').modal("show");
-    var $start_hour = '';
-    var $end_hour = '';
-    $('#start_hora').change(function () {
-      var $start_hour = $('#start_hora').val();
-      $('#dateStartEvent').val(date.format() + 'T' + $start_hour);
-      //console.log('tesete: '+$('#dateStartEvent').val());
-    });
-    $('#end_hora').change(function () {
-      var $end_hour = $('#end_hora').val();
-      $('#dateEndEvent').val(date.format() + 'T' + $end_hour);
-    });
+    // $('#eventos').modal("show");
+    // var $start_hour = '';
+    // var $end_hour = '';
+    // $('#start_hora').change(function () {
+    //   var $start_hour = $('#start_hora').val();
+    //   $('#dateStartEvent').val(date.format() + 'T' + $start_hour);
+    //   //console.log('tesete: '+$('#dateStartEvent').val());
+    // });
+    // $('#end_hora').change(function () {
+    //   var $end_hour = $('#end_hora').val();
+    //   $('#dateEndEvent').val(date.format() + 'T' + $end_hour);
+    // });
   }
 
 });

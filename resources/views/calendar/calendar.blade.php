@@ -18,16 +18,23 @@ body {
 
 @section('content')
 
-
 @include('layout.msg')
+<?php $client = DB::table('Inscricao')->where('codigoAvaliacao','=',session()->get('user.codaval'))->first(); ?>
+<div id="client_description" class="text-center" style="padding: 20px 50px 20px 50px; font-weight: bold;">
+  <p>Olá, {{$client->nome}}.
+      Marque a sua entrevista no calendário abaixo.
+  </p>
+</div>
 
 <div id='calendar'></div>
 
+<!--criar evento-->
 <div class="modal fade" id="eventos" tabindex="-1" role="dialog" aria-labelledby="newEvent" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="newEvent">Novo Evento</h5>
+        <h5 class="modal-title" id="newEvent">Novo Agendamento</h5>
+        <p>Marque a sua entrevista no evento preferido.</p>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -35,16 +42,17 @@ body {
       <div class="modal-body">
         <form method="post" action="{{ route('calendar.postevent') }}">
           <div class="form-group">
-            <label for="titleEvent">Título</label>
-            <input type="text" class="form-control" id="titleEvent" name="Titulo" placeholder="Título do Evento" required>
+            <label for="titleEvent">Nome</label>
+            <input type="text" class="form-control" id="titleEvent" name="Titulo" placeholder="Seu nome" value="{{$client->nome}}" required>
           </div>
           <div class="form-group">
             <label for="description">Descrição</label>
-            <textarea class="form-control" id="description" name="Descricao" placeholder="Descrição do Evento" required></textarea>
+            <textarea class="form-control" id="description" name="Descricao" placeholder="Descrição" required></textarea>
           </div>
           <div class="form-group">
             <div class="row">
               <div class="col">
+{{--                @foreach(DB::table('shedule')->where(''))--}}
                 <input type="time" class="form-control" id="start_hora" name="Hora_Inicio" placeholder="Início" required>
               </div>
               <div class="col">
@@ -66,7 +74,7 @@ body {
   </div>
 </div>
 
-
+<!--EDITAR-EVENTO-->
 <div class="modal fade" id="eventDetail" tabindex="-1" role="dialog" aria-labelledby="event" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -77,11 +85,8 @@ body {
         </button>
       </div>
       <div class="modal-body">
-    
-
       <form method="post" action="{{route('calendar.putevent')}}">
       @method('PUT')
-
           <div class="form-group">
             <label for="titleEvent">Título</label>
             <input type="text" class="form-control" id="titleDetail" name="Titulo_Detalhe" placeholder="Título do Evento" required>
@@ -104,6 +109,8 @@ body {
               </div>
             </div>
           </div>
+
+          <input type="hidden" value="{{$client->id}}" id="client_id">
           <input type="hidden" class="form-control" id="idDetail" name="idEvent" required>
           <button type="submit" class="btn" style="background:#4747d1; color:#fff;">Editar</button>
           <a href="javascript:delEvent()" class="btn btn-primary">Deletar</a>
@@ -111,6 +118,35 @@ body {
         </form>
 
 
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--Exibir-EVENTO-->
+<div class="modal fade" id="eventShow" tabindex="-1" role="dialog" aria-labelledby="event" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="titleShow"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Sobre o evento</p>
+        <hr>
+            <p id="descriptionShow"></p>
+            <p>Data: <span id="dataInitShow"></span> - <span id="dataEndShow"></span></p>
+      </div>
+      <input type="hidden" class="form-control" id="idShow" name="idEvent" required>
+      <hr>
+      <div class="modal-body">
+        <a href="javascript:createSchedule()" class="btn btn-danger">Agendar</a>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -142,6 +178,13 @@ body {
   {
     var campo = document.getElementById('idDetail');
     document.location.href="/calendar/deleteevent/"+campo.value;
+  }
+
+  function createSchedule()
+  {
+    var campo = document.getElementById('idShow');
+    console.log(campo.value);
+    document.location.href="/calendar/createschedule/"+campo.value;
   }
 </script>
 @endsection

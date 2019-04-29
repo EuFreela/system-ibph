@@ -23,6 +23,8 @@ class CalendarTable extends Migration
             $table->string('start'); //data inicio do evento
             $table->string('end'); //data fim do evento
             $table->timestamps();
+
+            $table->index('id');
         });
     }
 

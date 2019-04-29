@@ -5,12 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\CalendarModel;
 use Illuminate\Http\Request;
 use DB;
+use function MongoDB\BSON\toJSON;
 
 class DashboardController extends Controller
 {
     /**
      * GETTERS
      */
+    /** home */
+    public function getHome(){
+        if (session()->has('user')) {
+            return view('dashboard.home');
+        }
+    }
 
     /** blockevent */
     public function getBlockEventCreate(){
@@ -45,8 +52,10 @@ class DashboardController extends Controller
 
     public function getEventEdit($id){
         $event = DB::table('calendar')->where('id',$id)->first();
+        $schedule = DB::table('schedule')->where('calendar_id',$id)->get();
         return view('dashboard.event.edit')->with([
-            'event' => $event
+            'event' => $event,
+            'schedule' => $schedule
         ]);
     }
 
@@ -81,6 +90,8 @@ class DashboardController extends Controller
 
     public function postEventCreate(Request $request)
     {
+
+
         $request->validate([
             'Titulo' => 'required',
             'Descricao' => 'required',
@@ -93,10 +104,12 @@ class DashboardController extends Controller
         $start = $request->Data_Inicio . 'T' . $request->Hora_Inicio;
         $end = $request->Data_Fim . 'T' . $request->Hora_Fim;
 
+        $client_id = DB::table('Inscricao')->where('codigoAvaliacao', '=' , session()->get('user.codaval'))->first()->id;
+
         if (!$this->checkDateHour($start_datetime, $end_datetime)):
 
             $calendar = CalendarModel::create([
-                'client_id'=>$request->Cliente,
+                'client_id'=>$client_id,
                 'title'=>$request->Titulo,
                 'description'=>$request->Descricao,
                 'start_datetime'=>$start_datetime,
@@ -104,8 +117,18 @@ class DashboardController extends Controller
                 'start'=>$start,
                 'end'=>$end
             ]);
-            if($calendar)
+            if($calendar):
+                if ($request->hours && $request->vacancy):
+
+                    for($i=0;$i<sizeof($request->hours);$i++):
+                        $date = $request->Data_Inicio . ' ' . $request->hours[$i];
+                      DB::table('schedule')->insert([
+                          ['datetime' => $date, 'vacancy' => $request->vacancy[$i], 'calendar_id' => $calendar->id]
+                      ]);
+                    endfor;
+                endif;
                 return redirect()->route('dashboard.geteventlist')->with('success','Evento criado com sucesso!');
+            endif;
 
             return redirect()->back()->with('error','Não foi possível criar o evento!');
 
@@ -149,6 +172,22 @@ class DashboardController extends Controller
             ]);
 
             if($calendar)
+                if ($request->hours && $request->vacancy):
+                   // dd($request->all());
+
+                    if( $request->ids )
+                        DB::table('schedule')->where('calendar_id','=',$id)->whereNotIn('id',$request->ids)->delete();
+
+                    for($i=0;$i<sizeof($request->hours);$i++):
+                        $date = $request->Data_Inicio . ' ' . $request->hours[$i];
+                        DB::table('schedule')->updateOrInsert(
+                            ['calendar_id' => $id, 'id' => isset($request->ids[$i]) ? $request->ids[$i] : 0],
+                            ['datetime' => $date, 'vacancy' => $request->vacancy[$i], 'calendar_id' => $id]
+                        );
+                    endfor;
+                    else:
+                        DB::table('schedule')->where('calendar_id',$id)->delete();
+                endif;
                 return redirect()->route('dashboard.geteventlist')
                     ->with('success','Evento editado com sucesso!');
 

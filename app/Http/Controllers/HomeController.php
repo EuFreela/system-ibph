@@ -147,10 +147,14 @@ class HomeController extends Controller
 
     private function sumHappyness($id)
     {
-        $felicidades_positivas = DB::table('AreaVida')->where('id_avaliado','=',$id)->orderBy('id','desc')->first()->felicidade_positivas;
-        $felicidades_negativas = DB::table('AreaVida')->where('id_avaliado','=',$id)->orderBy('id','desc')->first()->felicidade_negativas;
-        $felicidades_neutras = DB::table('AreaVida')->where('id_avaliado','=',$id)->orderBy('id','desc')->first()->felicidade_neutras;
-        
+        $felicidades_positivas = isset(DB::table('AreaVida')->where('id_avaliado','=',$id)->orderBy('id','desc')->first()->felicidade_positivas)
+        ? DB::table('AreaVida')->where('id_avaliado','=',$id)->orderBy('id','desc')->first()->felicidade_positivas : 0;
+        $felicidades_negativas = isset(DB::table('AreaVida')->where('id_avaliado','=',$id)->orderBy('id','desc')->first()->felicidade_negativas)
+        ? DB::table('AreaVida')->where('id_avaliado','=',$id)->orderBy('id','desc')->first()->felicidade_negativas : 0;
+        $felicidades_neutras = isset(DB::table('AreaVida')->where('id_avaliado','=',$id)->orderBy('id','desc')->first()->felicidade_neutras)
+        ? DB::table('AreaVida')->where('id_avaliado','=',$id)->orderBy('id','desc')->first()->felicidade_neutras : 0;
+
+
         return (str_replace("%","",$felicidades_positivas)) + (str_replace("%","",$felicidades_negativas)) + (str_replace("%","",$felicidades_neutras));
        
     }

@@ -34,11 +34,15 @@ Route::get('/calendar','CalendarController@getCalendar')->name('calendar.calenda
 Route::post('/calendar/event','CalendarController@postEvent')->name('calendar.postevent');
 Route::put('/calendar/editevent','CalendarController@putEvent')->name('calendar.putevent');
 Route::get('/calendar/deleteevent/{id}','CalendarController@deleteEvent')->name('calendar.deleteevent');
+Route::get('/calendar/createschedule/{id}','CalendarController@getCreateSchedule')->name('calendar.getcreateschedule');
 
 
 /**
  * DASHBOARD
  */
+
+/** HOME */
+Route::get('/dashboard', 'DashboardController@getHome')->name('dashboard.gethome');
 
 /** BLOCKEVENT */
 Route::get('/dashboard/blockevent/create', 'DashboardController@getBlockEventCreate')->name('dashboard.getblockeventcreate');

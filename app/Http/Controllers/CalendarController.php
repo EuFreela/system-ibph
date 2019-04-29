@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\CalendarModel;
+use DB;
 
 class CalendarController extends Controller
 {
@@ -14,6 +15,17 @@ class CalendarController extends Controller
   {
     return view('calendar.calendar');
   }
+
+    public function getCreateSchedule($id)
+    {
+        return view('calendar.createschedule')->with(
+            [
+                'schedule' => DB::table('schedule')->where('calendar_id', '=',$id)->get(),
+                'event' => DB::table('calendar')->where('id','=',$id)->first(),
+                'client' => DB::table('Inscricao')->where('codigoAvaliacao', '=', session()->get('user.codaval'))->first()
+
+            ]);
+    }
 
   /**
   * POSTERS
@@ -35,10 +47,12 @@ class CalendarController extends Controller
     $end_datetime = explode("T",$request->Data_Fim);
     $end_datetime = $end_datetime[0] . ' ' . $end_datetime[1];
 
+    $client_id = DB::table('Inscricao')->where('codigoAvaliacao', '=' , session()->get('user.codaval'))->first()->id;
+
     if (!$this->checkDateHour($start_datetime, $end_datetime)):
 
       $calendar = CalendarModel::create([
-        'client_id'=>$request->Cliente,
+        'client_id'=>$client_id,
         'title'=>$request->Titulo,
         'description'=>$request->Descricao,
         'start_datetime'=>$start_datetime,
@@ -77,9 +91,11 @@ class CalendarController extends Controller
     $start_datetime = $request->Data_Detalhe.' '.$request->Hora_Inicio_Detalhe;
     $end_datetime = $request->Data_Detalhe.' '.$request->Hora_Fim_Detalhe;
 
+    $client_id = DB::table('Inscricao')->where('codigoAvaliacao', '=' , session()->get('user.codaval'))->first()->id;
+
     if (!$this->checkEditDateHour($start_datetime, $end_datetime, $request->idEvent)):
 
-      $calendar = CalendarModel::where('id','=',$request->idEvent)->
+      $calendar = CalendarModel::whereRaw('id=? and client_id=?', [$request->idEvent,$client_id])->
       update([
         'title'=>$request->Titulo_Detalhe,
         'description'=>$request->Descricao_Detalhe,
@@ -91,9 +107,9 @@ class CalendarController extends Controller
         
 
     if($calendar)
-        return redirect()->back()->with('success','Evento criado com sucesso!');
+        return redirect()->back()->with('success','Evento editado com sucesso!');
     
-    return redirect()->back()->with('error','Não foi possível criar o evento!');
+    return redirect()->back()->with('error','Não foi possível editar o evento!');
       
     else:
       return redirect()->back()->with('error','Já existe evento criado para esta data!');
@@ -106,7 +122,8 @@ class CalendarController extends Controller
    */
   public function deleteEvent($id)
   {
-    if( CalendarModel::where('id','=',$id)->delete() )
+      $client_id = DB::table('Inscricao')->where('codigoAvaliacao', '=' , session()->get('user.codaval'))->first()->id;
+    if( CalendarModel::whereRaw('id=? and client_id=?',[$id, $client_id])->delete() )
       return redirect()->back()->with('success','Evento deletado com sucesso');
     
     return redirect()->back()->with('error','Não oi possível excluir este evento!');

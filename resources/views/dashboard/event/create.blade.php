@@ -13,6 +13,7 @@
             max-width: 900px;
             margin: 0 auto;
         }
+
     </style>
 @endsection
 
@@ -21,6 +22,7 @@
 
     @include('layout.msg')
 
+    <div class="container">
     <div class="addEvent">
         <h2 class="title">Cadastro de Eventos</h2>
         <form method="post" action="{{ route('dashboard.posteventcreate') }}">
@@ -55,11 +57,41 @@
                 </div>
             </div>
             <input type="hidden" name="Cliente" value="1234"/>
-            <button type="submit" class="btn btn-primary">Cadastrar</button>
+
+            <div class="row">
+                <div class="col">
+            <p>Hor&aacute;rios disponíveis para entrevistas</p>
+            <div class="input-group control-group after-add-more" style="margin-top:10px">
+                <label for="hour">Hora</label>
+                <input type="time" name="hours[]" id="hour" class="form-control">
+                <label for="vacancy">Vagas</label>
+                <input type="number" name="vacancy[]" id="vacancy" class="form-control">
+                <div class="input-group-btn">
+                    <button class="btn btn-success add-more" type="button"><i class="fa fa-plus"></i></button>
+                </div>
+            </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="margin-top:10px">Cadastrar</button>
             @csrf
         </form>
-    </div>
 
+        <div class="row">
+            <!-- Copy Fields -->
+            <div class="copy hide">
+                <div class="control-group input-group" style="margin-top:10px">
+                    <label for="hour">Hora</label>
+                    <input type="time" name="hours[]" id="hour" class="form-control">
+                    <label for="vacancy">Vagas</label>
+                    <input type="number" name="vacancy[]"  id="vacancy" class="form-control">
+                    <div class="input-group-btn">
+                        <button class="btn btn-danger remove" type="button"><i class="fa fa-minus"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
 
 @endsection
 
@@ -84,5 +116,22 @@
             var campo = document.getElementById('idDetail');
             document.location.href="/calendar/deleteevent/"+campo.value;
         }
+
+
+        $(document).ready(function() {
+
+
+            $(".add-more").click(function(){
+                var html = $(".copy").html();
+                $(".after-add-more").after(html);
+            });
+
+
+            $("body").on("click",".remove",function(){
+                $(this).parents(".control-group").remove();
+            });
+
+
+        });
     </script>
 @endsection

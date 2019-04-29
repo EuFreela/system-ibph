@@ -401,15 +401,15 @@
                 <tbody>
                 <tr>
                     <td style=""><strong>CONHECIMENTO</strong></td>
-                    <td style="text-align:justify;">{{$cha->conhecimento_ser}}</td>
+                    <td style="text-align:justify;">{{isset($cha->conhecimento_ser) ? $cha->conhecimento_ser : 0}}</td>
                 </tr>
                 <tr>
                     <td style=""><strong>ATITUDE</strong><br /></td>
-                    <td style="text-align:justify;">{{$cha->atitudes_fazer}}</td>
+                    <td style="text-align:justify;">{{isset($cha->atitudes_fazer) ? $cha->atitudes_fazer : 0}}</td>
                 </tr>
                 <tr>
                     <td style=""><strong>HABILIDADE</strong><br /></td>
-                    <td style="text-align:justify;">{{$cha->habilidades_ter}}</td>
+                    <td style="text-align:justify;">{{isset($cha->habilidades_ter) ? $cha->habilidades_ter : 0}}</td>
                 </tr>
                 </tbody>
             </table>
@@ -456,15 +456,15 @@
                 <tbody>
                 <tr>
                     <td style=""><strong>FELICIDADES POSITIVA</strong></td>
-                    <td style="text-align:justify;">{{$wheel_satisfaction_with_life->felicidade_positivas}}</td>
+                    <td style="text-align:justify;">{{isset($wheel_satisfaction_with_life->felicidade_positivas) ? $wheel_satisfaction_with_life->felicidade_positivas : 0}}</td>
                 </tr>
                 <tr>
                     <td style=""><strong>FELICIDADES NEGATIVA</strong><br /></td>
-                    <td style="text-align:justify;">{{$wheel_satisfaction_with_life->felicidade_negativas}}</td>
+                    <td style="text-align:justify;">{{isset($wheel_satisfaction_with_life->felicidade_negativas) ? $wheel_satisfaction_with_life->felicidade_negativas : 0}}</td>
                 </tr>
                 <tr>
                     <td style=""><strong>FELICIDADES NEUTRA</strong><br /></td>
-                    <td style="text-align:justify;">{{$wheel_satisfaction_with_life->felicidade_neutras}}</td>
+                    <td style="text-align:justify;">{{isset($wheel_satisfaction_with_life->felicidade_neutras) ? $wheel_satisfaction_with_life->felicidade_neutras : 0}}</td>
                 </tr>
                 </tbody>
             </table>
@@ -1074,9 +1074,9 @@
 
                 var data = google.visualization.arrayToDataTable([
                     ['Gráfico', 'Autoconhecimento'],
-                    ['Conhecimento',     {{$cha->conhecimento_ser}}],
-                    ['Habilidade',      {{$cha->habilidades_ter}}],
-                    ['Atitude',  {{$cha->atitudes_fazer}}]
+                    ['Conhecimento',     {{isset($cha->conhecimento_ser) ? $cha->conhecimento_ser : 0}}],
+                    ['Habilidade',      {{isset($cha->habilidades_ter) ? $cha->habilidades_ter : 0}}],
+                    ['Atitude',  {{isset($cha->atitudes_fazer) ? $cha->atitudes_fazer : 0}}]
                 ]);
 
                 var options = {
@@ -1100,9 +1100,9 @@
 
                 var data = google.visualization.arrayToDataTable([
                     ['Gráfico', 'Autoconhecimento'],
-                    ['Felicidades Positiva',     {{$wheel_satisfaction_with_life->felicidade_positivas}}],
-                    ['Felicidades Neutra',      {{$wheel_satisfaction_with_life->felicidade_neutras}}],
-                    ['Felicidades Negativa',  {{$wheel_satisfaction_with_life->felicidade_negativas}}]
+                    ['Felicidades Positiva',     {{isset($wheel_satisfaction_with_life->felicidade_positivas) ? $wheel_satisfaction_with_life->felicidade_positivas : 0}}],
+                    ['Felicidades Neutra',      {{isset($wheel_satisfaction_with_life->felicidade_neutras) ? $wheel_satisfaction_with_life->felicidade_neutras : 0}}],
+                    ['Felicidades Negativa',  {{isset($wheel_satisfaction_with_life->felicidade_negativas) ? $wheel_satisfaction_with_life->felicidade_negativas: 0}}]
                 ]);
 
                 var options = {
