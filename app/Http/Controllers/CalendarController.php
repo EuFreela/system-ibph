@@ -16,17 +16,6 @@ class CalendarController extends Controller
     return view('calendar.calendar');
   }
 
-    public function getCreateSchedule($id)
-    {
-        return view('calendar.createschedule')->with(
-            [
-                'schedule' => DB::table('schedule')->where('calendar_id', '=',$id)->get(),
-                'event' => DB::table('calendar')->where('id','=',$id)->first(),
-                'client' => DB::table('Inscricao')->where('codigoAvaliacao', '=', session()->get('user.codaval'))->first()
-
-            ]);
-    }
-
   /**
   * POSTERS
   */

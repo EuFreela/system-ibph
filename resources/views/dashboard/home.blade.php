@@ -36,7 +36,7 @@
                 </div>
 
                 <div class="col-sm-6 col-md-5 col-lg-4 item">
-                    <a href="{{ route('calendar.calendar') }}">
+                    <a href="{{ route('calendar.getclientschedulelist') }}">
                      <div class="box"><i class="fa fa-calendar icon"></i></div>
                      <h3 class="name">AGENDA</h3>
                     </a>

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ScheduleTable extends Migration
+class CreateClientscheduleTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,15 @@ class ScheduleTable extends Migration
      */
     public function up()
     {
-        Schema::create('schedule', function (Blueprint $table) {
+        Schema::create('clientschedule', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('calendar_id')->unsigned();
-            $table->dateTime('datetime');
-            $table->integer('vacancy');
+            $table->integer('client_id');
+            $table->text('comment');
+            $table->integer('schedule_id')->unsigned();
             $table->timestamps();
 
-            $table->index('id');
-
-            $table->foreign('calendar_id')
-                ->references('id')->on('calendar')
+            $table->foreign('schedule_id')
+                ->references('id')->on('schedule')
                 ->onDelete('cascade');
         });
     }
@@ -35,6 +33,6 @@ class ScheduleTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('schedule');
+        Schema::dropIfExists('clientschedule');
     }
 }

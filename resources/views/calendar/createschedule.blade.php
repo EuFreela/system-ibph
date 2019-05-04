@@ -21,11 +21,13 @@
 
     @include('layout.msg')
 
+        
     <div class="container">
+    @if($ready)
         <div class="addEvent">
             <h2 class="title">Agendamento</h2>
             <p><b>Evento:</b> {{$event->title}}</p>
-            <form method="post" action="#">
+            <form method="post" action="{{ route('calendar.postcreateschedule',$client->id)}}">
                 <div class="form-group">
                     <label for="titleEvent">Nome</label>
                     <input type="text" class="form-control" id="name" name="Nome" placeholder="Seu nome" value="{{$client->nome}}" required>
@@ -37,7 +39,7 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col">
-                            <select name="" id="" class="form-control">
+                            <select name="Horario" id="" class="form-control">
                                 @foreach($schedule as $s)
                                 <option value="{{$s->id}}">Horário: {{date('H:i', strtotime($s->datetime))}} - Vagas: {{$s->vacancy}}</option>
                                 @endforeach
@@ -45,20 +47,16 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col">
-                            <input type="time" class="form-control" id="start_hora" name="Hora_Inicio" placeholder="Início" required>
-                        </div>
-                        <div class="col">
-                            <input type="time" class="form-control" id="end_hora" name="Hora_Fim" placeholder="Fim" required>
-                        </div>
-                    </div>
-                </div>
-
                 <button type="submit" class="btn btn-primary" style="margin-top:10px">Cadastrar</button>
+                <a class="btn btn-secondary" style="margin-top:10px" href="{{route('calendar.calendar')}}">Cancelar</a>
                 @csrf
             </form>
+    </div>
+            @else
+            <p>Qualquer coisa</p>
+            @endif
+    </div>
+        
 
 @endsection
 

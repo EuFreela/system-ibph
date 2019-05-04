@@ -34,8 +34,12 @@ Route::get('/calendar','CalendarController@getCalendar')->name('calendar.calenda
 Route::post('/calendar/event','CalendarController@postEvent')->name('calendar.postevent');
 Route::put('/calendar/editevent','CalendarController@putEvent')->name('calendar.putevent');
 Route::get('/calendar/deleteevent/{id}','CalendarController@deleteEvent')->name('calendar.deleteevent');
-Route::get('/calendar/createschedule/{id}','CalendarController@getCreateSchedule')->name('calendar.getcreateschedule');
 
+/**CLIENT SHEDULE */
+Route::get('/calendar/createschedule/{id}','ClientScheduleController@getCreateSchedule')->name('calendar.getcreateschedule');
+Route::post('/calendar/createschedule/{id}','ClientScheduleController@postCreateSchedule')->name('calendar.postcreateschedule');
+Route::get('/calendar/clientschedule/list','ClientScheduleController@getClientScheduleList')->name('calendar.getclientschedulelist');
+Route::get('/calendar/clientschedule/delete/{client_id}/{schedule_id}','ClientScheduleController@deleteClientSchedule')->name('calendar.deleteclientschedule');
 
 /**
  * DASHBOARD
