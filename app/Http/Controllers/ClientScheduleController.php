@@ -15,7 +15,7 @@ class ClientScheduleController extends Controller
     {
         $schedule = DB::table('schedule')->where('calendar_id', '=',$id)->get()->last()->datetime;
         $ready = false;
-        if(strtotime(date("Y-m-d"))<strtotime($schedule))
+        if(strtotime(date("Y-m-d"))<=strtotime(date("Y-m-d", strtotime($schedule))))
             $ready = true;
         return view('calendar.createschedule')->with(
             [
@@ -29,7 +29,7 @@ class ClientScheduleController extends Controller
     public function getClientScheduleList()
     {
 
-        $client = DB::table('Inscricao')->where('codigoAvaliacao','=',session()->get('user.codaval'))
+        $client_event_list = DB::table('Inscricao')->where('codigoAvaliacao','=',session()->get('user.codaval'))
         ->join('clientschedule','Inscricao.id','=','clientschedule.client_id')
         ->join('schedule','clientschedule.schedule_id','=','schedule.id')
         ->join('calendar','calendar.id','=','schedule.calendar_id')
@@ -44,8 +44,15 @@ class ClientScheduleController extends Controller
             'calendar.*'
         )
         ->get();
+        
+        $client = DB::table('Inscricao')->where('codigoAvaliacao','=',session()->get('user.codaval'))->first();
+        $events = DB::table('calendar')->orderBy('start_datetime','desc')->get();
 
-        return view('calendar.clientschedulelist')->with(['client'=>$client]);
+        return view('calendar.clientschedulelist')->with([
+            'client' => $client,
+            'client_event_list' => $client_event_list,
+            'events' => $events
+        ]);
     }
 
     /**
@@ -53,6 +60,7 @@ class ClientScheduleController extends Controller
      */
     public function postCreateSchedule(Request $request, $id)
     {
+       
         $request->validate([
             'Nome' => 'required',
             'Comentario' => 'required',
@@ -74,12 +82,12 @@ class ClientScheduleController extends Controller
                 DB::table('schedule')->where('id','=',$request->Horario)->update([
                     'vacancy' => ($vacancy - 1)
                 ]);
-                return redirect()->route('calendar.calendar')->with('success','Você foi cadastrado neste evento com sucesso!');
+                return redirect()->to(url()->previous().'#services')->with('success','Você foi cadastrado neste evento com sucesso!');
             }
-            return redirect()->back()->with('error','Não foi cadastrar neste evento! Entre em contato com os responsáveis.');
+            return redirect()->to(url()->previous().'#services')->with('error','Não foi cadastrar neste evento! Entre em contato com os responsáveis.');
 
         }
-        return redirect()->back()->with('error','Não há vagas disponíveis ou você já se cadastrou nesse evento!');
+        return redirect()->to(url()->previous().'#services')->with('error','Não há vagas disponíveis ou você já se cadastrou nesse evento!');
        
         
     }
@@ -88,16 +96,34 @@ class ClientScheduleController extends Controller
     /**
      * DELETTERS
      */
-    public function deleteClientSchedule($client_id,$schedule_id)
+    public function deleteClientSchedule($client_id,$schedule_id,$clientschedule_id)
     {
-        $clientHour = DB::table('clientschedule')->where('client_id','=',$client_id)->delete();
+        $clientHour = DB::table('clientschedule')->where('client_id','=',$client_id)->where('clientschedule.id','=',$clientschedule_id)->delete();
+        if($clientHour)
         $addVacancy = DB::table('schedule')->where('id','=',$schedule_id)->update([
             'vacancy' => (isset(DB::table('schedule')->where('id','=',$schedule_id)->first()->vacancy) ? DB::table('schedule')->where('id','=',$schedule_id)->first()->vacancy+1 : 1)
         ]);
         if( $clientHour and $addVacancy )
-            return redirect()->route('calendar.calendar')->with('success','Desistencia realizada com sucesso!');
+            return redirect()->to(url()->previous().'#services')->with('success','Desistencia realizada com sucesso!');
         
-        return redirect()->back()->with('error','Não foi possível realizar a desistencia! Entre em contato com os responsáveis.');
+        return redirect()->to(url()->previous().'#services')->with('error','Não foi possível realizar a desistencia! Entre em contato com os responsáveis.');
 
+    }
+
+
+    /**
+     * PRIVATES METHODS
+     */
+
+    private function dataCompare($id)
+    {
+        $schedule = DB::table('schedule')->where('calendar_id', '=',$id)->get()->last()->datetime;
+        $ready = false;
+        if(strtotime(date("Y-m-d"))<=strtotime(date("Y-m-d", strtotime($schedule))))
+            $ready = true;
+        $arr = [];
+        $arr[0] = $schedule;
+        $arr[1] = $ready;
+       return $arr;
     }
 }

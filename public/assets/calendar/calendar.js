@@ -124,6 +124,7 @@ $(document).ready(function () {
         $('#idDetail').val(calEvent.id);
       }else{
         $('#eventShow').modal("show");
+        console.log($('#eventos'));
         $('#titleShow').html(calEvent.title);
         $('#descriptionShow').html(calEvent.description);
         $('#dataInitShow').html(moment(calEvent.start_datetime).format('DD/MM/YYYY HH:mm'));

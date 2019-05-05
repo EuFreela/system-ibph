@@ -28,3 +28,6 @@ Route::middleware('api')->get('/wheel_development_copetences_high_performance/{i
  */
 Route::middleware('api')->get('/calendar/event','APIController@getCalendarEvent')->name('api.calendar_event');
 Route::middleware('api')->get('/calendar/eventblock','APIController@getCalendarEventBlock')->name('api.calendar_eventblock');
+Route::middleware('api')->get('/calendar/event/{id}','APIController@getCalendarEventID')->name('api.calendar_eventid');
+Route::middleware('api')->get('/calendar/eventhours/{id}','APIController@getCalendarEventHoursID')->name('api.calendar_eventhoursid');
+Route::middleware('api')->get('/calendar/clientschedule/{id}','APIController@getCalendarClientScheduleID')->name('api.calendar_clientescheduleid');

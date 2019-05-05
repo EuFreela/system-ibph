@@ -15,7 +15,7 @@ body {
 }
 </style>
 @endsection
-
+{{asset('agenda/
 @section('content')
 
 @include('layout.msg')
